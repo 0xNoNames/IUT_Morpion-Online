@@ -1,0 +1,7 @@
+json/login.php -> modifier le header() pour aller à la racine;
+login.js -> modifier  "window.location.href = '/'"
+
+bug register
+
+
+faire l'index (inscription, connexion, local, "anonyme")

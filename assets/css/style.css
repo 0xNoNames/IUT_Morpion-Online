@@ -1,0 +1,54 @@
+* {
+  margin: 0,
+    padding: 0,
+    box-sizing: border-box
+}
+
+#particles-js {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #000000;
+  font-family: 'Nunito', sans-serif;
+  'line-height': '0.8';
+  font-size: 100px;
+}
+
+#pannel {
+  color: white;
+  border: 3px solid white;
+  border-radius: 30px;
+}
+
+/*
+let css_cell = {
+    width: 150px;
+    height: 150px;
+z-index: 1
+};
+
+let css_score = {
+    color: white;
+    position: absolute;
+    display: flex;
+    top: 80%;
+    height: '75px';
+font-size: 100px;
+z-index: 1
+};
+
+let css_damier = {
+    display: inherit;
+z-index: 1
+};*/
