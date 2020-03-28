@@ -1,25 +1,34 @@
 <!doctype html>
 <html lang="fr">
+
 <head>
-    <meta charset="utf-8">
-    <title>Tic-Tac-Toe</title>
+  <meta charset="utf-8">
+  <title>S'incrire sur Tic-Tac-Toe</title>
+  <link href="https://fonts.googleapis.com/css?family=Nunito&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
+
 <body>
-<form id="form-register" action="assets/php/register.php" method="post" enctype="multipart/form-data">
-    <input type="text" name="email" placeholder="email" required>
-    <br>
-    <input type="text" name="username" placeholder="username" required>
-    <br>
-    <input type="password" name="password" placeholder="password" required>
-    <br>
-    <button type="submit"> Envoyer</button>
-    <br>
-</form>
-<div id="messages" style="display: none;">
+  <div id="particles-js"></div>
+  <form id="form-register" action="assets/php/register.php" method="post" enctype="multipart/form-data" autocomplete="off">
+    <input type="text" name="email" placeholder="E-mail" onfocus="this.placeholder = ''"
+           onblur="this.placeholder = 'E-mail'"required>
+    <input type="text" name="username" placeholder="Identifiant" onfocus="this.placeholder = ''"
+           onblur="this.placeholder = 'Identifiant'" required>
+    <input type="password" name="password" placeholder="Mot de passe" onfocus="this.placeholder = ''"
+           onblur="this.placeholder = 'Mot de passe'" required>
+    <button id="loginbutton" type="submit">S'incrire</button>
+  </form>
 
-</div>
+  <div id="messages" style="display: none;"> </div>
+  <button id="home">Acceuil</button>
 
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/register.js"></script>
+  </div>
+  <script src="assets/js/particles.min.js"></script>
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/jquery-ui.min.js"></script>
+  <script src="assets/js/functions.js"></script>
+  <script src="assets/js/register.js"></script>
 </body>
+
 </html>
