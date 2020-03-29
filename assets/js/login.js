@@ -12,7 +12,6 @@
             $('body').html('Fatal error');
         });
         $('#form-login').on('submit', function () {
-            $('#messages').fadeOut();
             $.ajax({
                 url: $(this).attr('action'),
                 method: $(this).attr('method'),
@@ -22,7 +21,7 @@
                     //window.location.href = '/';
                     window.location.href = '/JS/AjaxLOG';
                 } else {
-                    $('#messages').html(data.message).fadeIn();
+                    $('#messages').html(data.message).fadeIn(250);
                 }
             }).fail(function () {
                 $('body').html('Fatal error');

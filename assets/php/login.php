@@ -23,28 +23,27 @@ if (!$db) {
     $username = mysqli_real_escape_string($db, $_POST['username']);
     $password = mysqli_real_escape_string($db, $_POST['password']);
 
-    $sql = "SELECT id FROM LOGGED WHERE username  = '$username' LIMIT 1";
+    $sql = "SELECT id, password FROM USERS WHERE username  = '$username'";
     $result = $db->query($sql);
 
     if (mysqli_num_rows($result) > 0) {
-        $obj->message = "Utilisateur déjà connecté !";
-    } else {
+        $row = $result->fetch_assoc();
+        if (password_verify($password, $row['password'])) {
+            $sql = "SELECT id FROM LOGGED WHERE username  = '$username' LIMIT 1";
+            $result = $db->query($sql);
 
-        $sql = "SELECT id, password FROM USERS WHERE username  = '$username'";
-        $result = $db->query($sql);
-
-        if (mysqli_num_rows($result) > 0) {
-            $row = $result->fetch_assoc();
-            if (password_verify($password, $row['password'])) {
+            if (mysqli_num_rows($result) > 0) {
+                $obj->message = "Utilisateur déjà connecté !";
+            } else {
                 session_regenerate_id();
                 $obj->success = true;
                 $_SESSION['user'] = $username;
-            } else {
-                $obj->message = "Mauvaise combinaison d'identifiants";
             }
         } else {
             $obj->message = "Mauvaise combinaison d'identifiants";
         }
+    } else {
+        $obj->message = "Mauvaise combinaison d'identifiants";
     }
     mysqli_close($db);
 }

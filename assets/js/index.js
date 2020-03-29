@@ -55,15 +55,28 @@
 
     function Connected() {
         $.ajax({
-            url: 'assets/php/connected.php',
-            type: 'get',
-            dataType: 'json',
-            success: function (parsed) {
-                showUsers(parsed.logged);
-                var connectedTimeout = setTimeout(function () {
-                    Connected();
-                }, 5000);
+            url: 'assets/php/is_connected.php',
+            method: 'get',
+        }).done(function (data) {
+            if (data.success) {
+                $.ajax({
+                    url: 'assets/php/connected.php',
+                    type: 'get',
+                    dataType: 'json',
+                    success: function (parsed) {
+                        showUsers(parsed.logged);
+                        var connectedTimeout = setTimeout(function () {
+                            Connected();
+                        }, 5000);
+                    }
+                }).fail(function () {
+                    $('body').html('Fatal error');
+                });
+            } else {
+                window.location.reload();
             }
+        }).fail(function () {
+            $('body').html('Fatal error');
         });
     }
 

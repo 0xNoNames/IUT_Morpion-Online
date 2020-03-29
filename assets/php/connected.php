@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-if (!isset($_SESSION["user"])) { //|| !isset($_POST["username"])) {
-    header("location: /JS/AjaxLOG");
+if (!isset($_SESSION["user"])) {
+    header("Refresh:0");
     exit;
 }
 
