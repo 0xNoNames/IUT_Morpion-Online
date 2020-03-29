@@ -20,9 +20,6 @@ $db = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
 if (!$db) {
     $obj->message = 'Problème de connection avec la base de donnée';
 } else {
-    $sql = "DELETE FROM LOGGED WHERE LastCheck < date_sub(now(), interval 30 SECOND)";
-    $db->query($sql);
-
     $username = mysqli_real_escape_string($db, $_POST['username']);
     $password = mysqli_real_escape_string($db, $_POST['password']);
 

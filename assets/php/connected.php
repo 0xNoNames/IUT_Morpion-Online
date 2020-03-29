@@ -21,7 +21,6 @@ $db = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
 if (!$db) {
     $obj->message = 'Problème de connection avec la base de donnée';
 } else {
-
     $sql = "SELECT id FROM LOGGED WHERE username  = '$username' LIMIT 1";
     $result = $db->query($sql);
 
@@ -52,7 +51,7 @@ if (!$db) {
     } else {
         $obj->logged = array("0");
     }
-    $sql = "DELETE FROM LOGGED WHERE LastCheck < date_sub(now(), interval 30 SECOND)";
+    $sql = "DELETE FROM LOGGED WHERE LastCheck < date_sub(now(), interval 10 SECOND)";
     $db->query($sql);
 
     mysqli_close($db);

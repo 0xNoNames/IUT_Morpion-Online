@@ -1,7 +1,7 @@
 json/login.php -> modifier le header() pour aller à la racine;
 login.js -> modifier  "window.location.href = '/'"
 
-bug register
 
-
-faire l'index (inscription, connexion, local, "anonyme")
+1) modifier le color dans functions pour le plagiat
+2) changer les colors pour glow (text-shadow pour la div)
+3) Plus qu'à faire le scoreboard, le ingame et le local :)

@@ -10,15 +10,15 @@
 
 <body>
 <div id="particles-js"></div>
-<form id="form-login" action="assets/php/login.php" method="post" enctype="multipart/form-data">
-    <input type="text" name="username" placeholder="Nom d'uilisateur" onfocus="this.placeholder = ''"
-           onblur="this.placeholder = 'Nom d\'uilisateur'" required>
+<form id="form-login" action="assets/php/login.php" method="post" enctype="multipart/form-data" autocomplete="off" >
+    <input type="text" name="username" placeholder="Identifiant" onfocus="this.placeholder = ''"
+           onblur="this.placeholder = 'Identifiant'" required>
     <input type="password" name="password" placeholder="Mot de passe" onfocus="this.placeholder = ''"
            onblur="this.placeholder = 'Mot de passe'"required>
     <button id="loginbutton" type="submit">Se connecter</button>
 </form>
 <div id="messages" style="display: none;"></div>
-<button id="home">Acceuil</button>
+<button id="home">Accueil</button>
 
 <script src="assets/js/particles.min.js"></script>
 <script src="assets/js/jquery.min.js"></script>
