@@ -3,5 +3,16 @@ login.js -> modifier  "window.location.href = '/'"
 
 
 1) modifier le color dans functions pour le plagiat
-2) changer les colors pour glow (text-shadow pour la div)
 3) Plus qu'à faire le scoreboard, le ingame et le local :)
+
+
+
+https://stackoverflow.com/questions/409496/prevent-direct-access-to-a-php-include-file
+Parce que connected.php fait reload la page
+
+
+Mettre text shadow partout
+
+
+(les réparer) Mettre les boutons du params (demande d'une game) en box-shadow
+Mettre les boutons de register et login en box-shadow

@@ -2,34 +2,33 @@
 <html lang="fr">
 
 <head>
-    <meta charset="utf-8">
-    <title>S'incrire sur Tic-Tac-Toe</title>
-    <link href="https://fonts.googleapis.com/css?family=Nunito&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
+  <meta charset="utf-8">
+  <title>S'incrire sur Tic-Tac-Toe</title>
+  <link href="https://fonts.googleapis.com/css?family=Nunito&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
-<div id="particles-js"></div>
-<form id="form-register" action="assets/php/register.php" method="post" autocomplete="off"
-      enctype="multipart/form-data">
-    <input type="text" name="mail" placeholder="E-mail" onfocus="this.placeholder = ''"
-           onblur="this.placeholder = 'E-mail'" autocomplete="off" required>
-    <input type="text" name="username" placeholder="Identifiant" onfocus="this.placeholder = ''"
-           onblur="this.placeholder = 'Identifiant'" required>
-    <input type="password" name="password" placeholder="Mot de passe" onfocus="this.placeholder = ''"
-           onblur="this.placeholder = 'Mot de passe'" required>
+  <div id="particles-js"></div>
+  <form id="form-register" action="assets/php/register.php" method="post" autocomplete="off" enctype="multipart/form-data">
+    <input type="email" name="mail" placeholder="Adresse e-mail" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Adresse e-mail'" value="" maxlength="30" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false"
+      required="true">
+    <input type="text" name="username" placeholder="Identifiant" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Identifiant'" value="" maxlength="25" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false"
+      required="true">
+    <input type="password" name="password" placeholder="Mot de passe" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Mot de passe'" value="" minlength="6" maxlength="20" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false"
+      required="true">
     <button id="loginbutton" type="submit">S'incrire</button>
-</form>
+  </form>
 
-<div id="messages" style="display: none;"></div>
-<button id="home">Accueil</button>
+  <div id="messages" style="display: none;"></div>
+  <button id="home">Accueil</button>
 
-</div>
-<script src="assets/js/particles.min.js"></script>
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/jquery-ui.min.js"></script>
-<script src="assets/js/functions.js"></script>
-<script src="assets/js/register.js"></script>
+  </div>
+  <script src="assets/js/lib/particles.min.js"></script>
+  <script src="assets/js/lib/jquery.min.js"></script>
+  <script src="assets/js/lib/jquery-ui.min.js"></script>
+  <script src="assets/js/functions.js"></script>
+  <script src="assets/js/register.js"></script>
 </body>
 
 </html>
