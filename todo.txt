@@ -1,9 +1,17 @@
-json/login.php -> modifier le header() pour aller à la racine;
-login.js -> modifier  "window.location.href = '/'"
-
+json/login.php -> modifier le header() pour aller à la racine;          #
+login.js -> modifier  "window.location.href = '/'"                      #
+#########################################################################
 
 1) modifier le color dans functions pour le plagiat
 3) Plus qu'à faire le scoreboard, le ingame et le local :)
+
+
+Envoie d'une game :
+1) on choisit le bo (déjà fait)
+2) appuis sur Démarrer -> déplace le joueur dans game.html et le fait attendre, peut annuler à tout momen
+, si attente dépasse 30s locate index (timeout dans le js de game.html)
+3) côté receveur, check toutes les 5 secondes si reçoit de game (on supprime les affichages et montre "Demande de duel en BOx ; ACCEPTER, REFUSER"
+
 
 
 
@@ -14,5 +22,5 @@ Parce que connected.php fait reload la page
 Mettre text shadow partout
 
 
-(les réparer) Mettre les boutons du params (demande d'une game) en box-shadow
-Mettre les boutons de register et login en box-shadow
+BUG :
+    Régler le click sur params pour pouvoir changer la couleurs de fond

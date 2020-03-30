@@ -30,23 +30,22 @@ body {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    text-shadow: 0 0 0 5px white;
 }
 
-nav::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
+::-webkit-scrollbar {
+    width: 10px;
     background-color: transparent;
 }
 
-nav::-webkit-scrollbar {
-    width: 12px;
-    background-color: transparent;
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 10px 10px rgba(255, 255, 255, 0.3);
+    border: solid 3px transparent;
+    border-radius: 2px;
 }
 
-nav::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
-    background-color: rgb(0, 0, 255);
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
 }
 
 #name {
@@ -58,20 +57,48 @@ nav::-webkit-scrollbar-thumb {
     display: none;
 }
 
-nav ul {
+#scores {
+    font-size: 80%;
+    border: 1px solid white;
+    margin-top: 1vh;
+    border-radius: 25px;
+    /* box-shadow: 0px 0px 10px white; */
+}
+
+#scores > ul {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0 2vh 0 2vh;
+}
+
+#scoreboard {
+    display: none;
     text-align: center;
-    cursor: pointer;
+    color: white;
+    font-size: 25%;
+    left: 5%;
+    height: 30vh;
+    position: absolute;
 }
 
 #navusers {
+    height: 30vh;
+    width: 25vh;
     display: none;
+    overflow-x: hidden;
+    overflow-y: auto;
     border: 1px solid white;
-    overflow: hidden;
+    border-radius: 5px;
+}
+
+#navusers nav ul {
+    cursor: pointer;
 }
 
 nav ul {
-    font-size: 75%;
-    margin-left: 5%;
+    height: 100%;
+    text-align: center;
     padding: 5% 0 5% 0;
     border-bottom: 0.5px solid white;
 }
@@ -80,21 +107,13 @@ nav ul:last-child {
     border-bottom: none;
 }
 
-nav {
-    height: 30vh;
-    overflow: auto;
-    overflow-y: scroll;
-}
-
-header {
-    margin-bottom: 5%;
-}
-
 #connectedusers {
     z-index: 999;
     color: white;
-    display: none;
-    font-size: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 20%;
     margin: 5% 0 5% 0;
 }
 
@@ -114,7 +133,6 @@ header {
     margin-top: 1%
 }
 
-
 #params {
     z-index: 999;
 }
@@ -132,6 +150,7 @@ header {
     padding: 5% 15%;
     margin-top: 5%;
     background-color: rgba(255, 255, 255, 0.3);
+    box-shadow: none;
     border-radius: 30px;
 }
 
@@ -150,20 +169,21 @@ header {
     display: flex;
     flex-direction: column;
     border: none;
-    border-radius: 25px;
-    overflow: hidden;
     z-index: 999;
 }
 
-input[type=text], input[type=password], #loginbutton {
+input[type=text], input[type=password], input[type=email], #loginbutton {
     color: white;
     background-color: transparent;
     font-size: 30%;
     padding: 2% 15%;
     text-decoration: none;
     border: none;
-    border-bottom: 1px solid white;
     text-align: center;
+}
+
+input[type=text], input[type=email] {
+    border-bottom: 1px solid white;
 }
 
 #paramSendButton {
@@ -177,16 +197,18 @@ input[type=text], input[type=password], #loginbutton {
 }
 
 #loginbutton {
+    margin-top: 5%;
     padding: 5% 15%;
     cursor: pointer;
     border: none;
+    border-radius: 5px;
 }
 
 button:focus {
     outline: 0;
 }
 
-#home, #logoutbutton {
+#home, #disconnect {
     position: absolute;
     top: 90%;
     z-index: 999;
@@ -194,7 +216,6 @@ button:focus {
     font-size: 20%;
     color: white;
     padding: 10px 20px;
-    border: 1px solid white;
     border-radius: 30px;
     cursor: pointer;
 }
@@ -211,29 +232,37 @@ button:focus {
     cursor: pointer;
 }
 
-#logoutbutton {
+#disconnect {
     display: none;
+    border: none;
     background-color: rgba(255, 0, 0, 0.25);
+    box-shadow: 0px 0px 5px rgba(255, 0, 0, 0.25), 0px 0px 10px rgba(255, 0, 0, 0.25), 0px 0px 15px rgba(255, 0, 0, 0.25), 0px 0px 20px rgba(255, 0, 0, 0.25), 0px 0px 30px rgba(255, 0, 0, 0.25), 0px 0px 40px rgba(255, 0, 0, 0.25), 0px 0px 55px rgba(255, 0, 0, 0.25);
 }
 
-#logoutbutton:hover {
-    background-color: rgba(255, 0, 0, 0.5);
+#disconnect:hover {
+    background-color: rgba(255, 0, 0, 0.75);
+    box-shadow: 0px 0px 5px rgba(255, 0, 0, 0.50), 0px 0px 10px rgba(255, 0, 0, 0.50), 0px 0px 15px rgba(255, 0, 0, 0.50), 0px 0px 20px rgba(255, 0, 0, 0.50), 0px 0px 30px rgba(255, 0, 0, 0.50), 0px 0px 40px rgba(255, 0, 0, 0.50), 0px 0px 55px rgba(255, 0, 0, 0.50);
 }
 
 #home {
-    background-color: rgba(0, 255, 255, 0.25);
+    border: none;
+    background-color: rgba(0, 255, 255, 0.35);
+    box-shadow: 0px 0px 5px rgba(0, 255, 255, 0.10), 0px 0px 10px rgba(0, 255, 255, 0.10), 0px 0px 15px rgba(0, 255, 255, 0.10), 0px 0px 20px rgba(0, 255, 255, 0.10), 0px 0px 30px rgba(0, 255, 255, 0.10), 0px 0px 40px rgba(0, 255, 255, 0.10), 0px 0px 55px rgba(0, 255, 255, 0.10);
 }
 
 #home:hover {
-    background-color: rgba(0, 255, 255, 0.5);
+    background-color: rgba(0, 255, 255, 0.60);
+    box-shadow: 0px 0px 5px rgba(0, 255, 255, 0.25), 0px 0px 10px rgba(0, 255, 255, 0.25), 0px 0px 15px rgba(0, 255, 255, 0.25), 0px 0px 20px rgba(0, 255, 255, 0.25), 0px 0px 30px rgba(0, 255, 255, 0.25), 0px 0px 40px rgba(0, 255, 255, 0.25), 0px 0px 55px rgba(0, 255, 255, 0.25);
 }
 
 #local {
     background-color: rgba(255, 255, 255, 0.50);
+    box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.10), 0px 0px 10px rgba(255, 255, 255, 0.10), 0px 0px 15px rgba(255, 255, 255, 0.10), 0px 0px 20px rgba(255, 255, 255, 0.10), 0px 0px 30px rgba(255, 255, 255, 0.10), 0px 0px 40px rgba(255, 255, 255, 0.10), 0px 0px 55px rgba(255, 255, 255, 0.10);
 }
 
 #local:hover {
     background-color: rgba(255, 255, 255, 0.75);
+    box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.25), 0px 0px 10px rgba(255, 255, 255, 0.25), 0px 0px 15px rgba(255, 255, 255, 0.25), 0px 0px 20px rgba(255, 255, 255, 0.25), 0px 0px 30px rgba(255, 255, 255, 0.25), 0px 0px 40px rgba(255, 255, 255, 0.25), 0px 0px 55px rgba(255, 255, 255, 0.25);
 }
 
 /*

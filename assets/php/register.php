@@ -16,11 +16,15 @@ define('DB_PASSWORD', 'Aze123*');
 define('DB_DATABASE', 'arthurdev_tictactoe');
 
 if (!filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL)) {
-    $obj->message = 'Email non valide';
+    $obj->message = 'Adresse mail non valide';
 } elseif (preg_match('/[A-Za-z0-9]+/', $_POST['username']) == 0) {
     $obj->message = 'Nom d\'utilisateur non valide';
-} elseif ((strlen($_POST['password']) > 20 || strlen($_POST['password']) < 5)) {
-    $obj->message = 'Mot de passe doit être compris entre 5 et 20 caractères';
+} elseif (strlen($_POST['username']) > 25) {
+    $obj->message = 'Le nom d\'utlisateur ne doit pas dépasser 25 caractères';
+} elseif (strlen($_POST['mail']) > 30) {
+    $obj->message = 'L\'adresse mail ne doit pas dépasser 30 caractères';
+} elseif ((strlen($_POST['password']) > 20 || strlen($_POST['password']) < 6)) {
+    $obj->message = 'Le mot de passe doit être compris entre 6 et 20 caractères';
 } else {
     $db = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
 
