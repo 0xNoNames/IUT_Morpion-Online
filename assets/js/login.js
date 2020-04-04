@@ -9,8 +9,12 @@
         window.location.href = '/JS/AjaxLOG';
       }
     }).fail(function () {
-      $('body').html('Fatal error');
+      $('body').css({
+        'color': 'white',
+        'font-size': '25px'
+      }).html('Fatal error at connected.php from login.js ajax');
     });
+
     $('#form-login').on('submit', function () {
       $.ajax({
         url: $(this).attr('action'),
@@ -25,7 +29,10 @@
         }
         $('input[type="password"]').val('');
       }).fail(function () {
-        $('body').html('Fatal error');
+        $('body').css({
+          'color': 'white',
+          'font-size': '25px'
+        }).html('Fatal error at login.php from login.js ajax');
       });
       return false;
     });

@@ -9,7 +9,10 @@
         window.location.href = '/JS/AjaxLOG';
       }
     }).fail(function () {
-      $('body').html('Fatal error');
+      $('body').css({
+        'color': 'white',
+        'font-size': '25px'
+      }).html('Fatal error at connected.php from register.js ajax');
     });
     $('#form-register').on('submit', function () {
       $('#messages').fadeOut();
@@ -25,7 +28,10 @@
           $('#messages').html(data.message).fadeIn();
         }
       }).fail(function () {
-        $('body').html('Fatal error');
+        $('body').css({
+          'color': 'white',
+          'font-size': '25px'
+        }).html('Fatal error at register.php from register.js ajax');
       });
       return false;
     });

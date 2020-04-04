@@ -11,6 +11,8 @@ $db = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
 $sql = "DELETE FROM LOGGED WHERE username = '$username'";
 $db->query($sql);
 
+$sql = "DELETE FROM GAME WHERE player1='$username'";
+if ($db->query($sql) === FALSE) $obj->message = $db->error;
 
 // Détruit toutes les variables de session
 $_SESSION = array();

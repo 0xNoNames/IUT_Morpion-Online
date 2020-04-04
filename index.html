@@ -2,37 +2,44 @@
 <html lang="fr">
 
 <head>
-    <meta charset="utf-8">
-    <title>Acceuil | Tic-Tac-Toe Online</title>
-    <link href="https://fonts.googleapis.com/css?family=Nunito&display=swap" rel="stylesheet">
-    <link title="style" rel="stylesheet" href="assets/css/style.css">
+  <meta charset="utf-8">
+  <title>Accueil | Tic-Tac-Toe Online</title>
+  <link href="https://fonts.googleapis.com/css?family=Nunito&display=swap" rel="stylesheet">
+  <link title="style" rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
-<div id="particles-js"></div>
-<div id="name"></div>
-<div id="params"></div>
-<div id="scoreboard">Scoreboard<nav id="scores"></nav></div>
-<div id="connectedusers">
+  <div id="particles-js"></div>
+  <div id="name"></div>
+  <div id="params"></div>
+  <div id="scoreboard">Scoreboard
+    <nav id="navscores"></nav>
+  </div>
+  <div id="loggedboard">
     <header></header>
-    <div id="navusers">
-        <nav></nav>
-    </div>
-</div>
-<div id="pannel">
+    <nav id="navusers">
+      <ul></ul>
+    </nav>
+  </div>
+  <div id="pendingboard">Demandes
+    <nav id="navrequests">
+      <ul></ul>
+    </nav>
+  </div>
+  <div id="pannel">
     <button id="connexion">CONNEXION</button>
     <button id="inscription">INSCRIPTION</button>
     <button id="local">LOCAL</button>
-</div>
-<button id="disconnect">Se déconnecter</button>
-<div id="messages" style="display: none;"></div>
+  </div>
+  <button id="disconnect">Se déconnecter</button>
+  <div id="messages" style="display: none;"></div>
 
 
-<script src="assets/js/lib/particles.min.js"></script>
-<script src="assets/js/lib/jquery.min.js"></script>
-<script src="assets/js/lib/jquery-ui.min.js"></script>
-<script src="assets/js/functions.js"></script>
-<script src="assets/js/index.js"></script>
+  <script src="assets/js/lib/particles.min.js"></script>
+  <script src="assets/js/lib/jquery.min.js"></script>
+  <script src="assets/js/lib/jquery-ui.min.js"></script>
+  <script src="assets/js/functions.js"></script>
+  <script src="assets/js/index.js"></script>
 </body>
 
 </html>

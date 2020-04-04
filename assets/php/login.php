@@ -10,6 +10,9 @@ $obj = new stdClass();
 $obj->success = false;
 $obj->message = 'Identifiant ou mot de passe incorrect';
 
+$_SESSION['bothconnected'] = false;
+$_SESSION['in_game'] = false;
+
 define('DB_SERVER', 'mysql-arthurdev.alwaysdata.net');
 define('DB_USERNAME', 'arthurdev');
 define('DB_PASSWORD', 'Aze123*');
@@ -23,7 +26,7 @@ if (!$db) {
     $username = mysqli_real_escape_string($db, $_POST['username']);
     $password = mysqli_real_escape_string($db, $_POST['password']);
 
-    $sql = "SELECT id, password FROM USERS WHERE username  = '$username'";
+    $sql = "SELECT password FROM USERS WHERE username  = '$username'";
     $result = $db->query($sql);
 
     if (mysqli_num_rows($result) > 0) {
@@ -38,7 +41,7 @@ if (!$db) {
                 session_regenerate_id();
                 $obj->success = true;
                 $_SESSION['user'] = $username;
-            }
+            } $obj->message = $db->error;
         } else {
             $obj->message = "Mauvaise combinaison d'identifiants";
         }

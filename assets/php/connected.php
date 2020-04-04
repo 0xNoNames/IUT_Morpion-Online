@@ -1,74 +1,93 @@
 <?php
 session_start();
 
-$obj = new stdClass();
-$obj->success = isset($_SESSION['user']);
-
-if (isset($_SESSION['user'])) {
-    $obj->username = $_SESSION['user'];
-
-    define('DB_SERVER', 'mysql-arthurdev.alwaysdata.net');
-    define('DB_USERNAME', 'arthurdev');
-    define('DB_PASSWORD', 'Aze123*');
-    define('DB_DATABASE', 'arthurdev_tictactoe');
-    $username = $_SESSION['user'];
-    $loggedusers = array();
-    $scores = array();
-
-
-    $db = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-
-    if (!$db) {
-        $obj->message = 'Problème de connection avec la base de donnée';
-    } else {
-        $sql = "SELECT id FROM LOGGED WHERE username  = '$username' LIMIT 1";
-        $result = $db->query($sql);
-
-        if (mysqli_num_rows($result) > 0) {
-            $row = $result->fetch_assoc();
-            $id = $row['id'];
-            $sql = "UPDATE LOGGED SET LastCheck = now() WHERE id = '$id'";
-
-            if ($db->query($sql)) {
-                $obj->message = "Check actualisé !";
-            }
-
-        } else {
-            $sql = "INSERT INTO LOGGED (username, LastCheck, FirstCheck) VALUES ('$username',now(),now())";
-            if ($db->query($sql) === FALSE) {
-                $obj->message = $db->error;
-            }
-        }
-        $sql = "SELECT username, ingame, UNIX_TIMESTAMP(FirstCheck) as FirstCheck FROM LOGGED WHERE username <> '$username' ORDER BY FirstCheck DESC";
-        $result = $db->query($sql);
-        if (mysqli_num_rows($result) > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $user = array($row['username'], $row['ingame']);
-                array_push($loggedusers, $user);
-            }
-            $obj->success = true;
-            $obj->logged = $loggedusers;
-        } else {
-            $obj->logged = array("0");
-        }
-        $sql = "SELECT username, score FROM USERS ORDER BY score DESC LIMIT 10";
-        $result = $db->query($sql);
-        if (mysqli_num_rows($result) > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $user = array($row['username'], $row['score']);
-                array_push($scores, $user);
-                $obj->scores = $scores;
-            }
-        }
-        $sql = "DELETE FROM LOGGED WHERE LastCheck < date_sub(now(), interval 10 SECOND)";
-        $db->query($sql);
-
-        mysqli_close($db);
-    }
-} else {
-    header("JS/AjaxLog/");
+if (!isset($_SESSION['user'])) {
+    header("location: /JS/AjaxLOG");
     exit;
 }
+
+$obj = new stdClass();
+$obj->success = isset($_SESSION['user']);
+$obj->username = $_SESSION['user'];
+$obj->ingame = false;
+$obj->logged = array("0");
+$obj->pendings = array("");
+$obj->scores = array("");
+
+$username = $_SESSION['user'];
+$loggedusers = array();
+$scores = array();
+$pendings = array();
+
+define('DB_SERVER', 'mysql-arthurdev.alwaysdata.net');
+define('DB_USERNAME', 'arthurdev');
+define('DB_PASSWORD', 'Aze123*');
+define('DB_DATABASE', 'arthurdev_tictactoe');
+
+
+$db = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+if (!$db) {
+    $obj->message = 'Problème de connection avec la base de donnée';
+} else {
+
+    //update du check
+    $sql = "SELECT id FROM LOGGED WHERE username  = '$username' LIMIT 1";
+    $result = $db->query($sql);
+    if (mysqli_num_rows($result) > 0) {
+        $row = $result->fetch_assoc();
+        $id = $row['id'];
+        $sql = "UPDATE LOGGED SET last_check = now() WHERE id = '$id'";
+        if ($db->query($sql)) $obj->message = "Check actualisé !";
+        else $obj->message = "Problèmes pour actualiser la session";
+    } else {
+        $sql = "INSERT INTO LOGGED (username, last_check, first_check) VALUES ('$username',now(),now())";
+        if ($db->query($sql) === FALSE) $obj->message = $db->error;
+    }
+
+    //afficher les joueurs en ligne
+    $sql = "SELECT username, in_game, UNIX_TIMESTAMP(first_check) as first_check FROM LOGGED WHERE username <> '$username' ORDER BY first_check DESC";
+    $result = $db->query($sql);
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = $result->fetch_assoc()) {
+            array_push($loggedusers, array($row['username'], $row['in_game']));
+        }
+        $obj->logged = $loggedusers;
+    }
+
+    //afficher les demandes
+    $sql = "SELECT id, player1, player2, best_of FROM GAME WHERE player2 = '$username' ORDER BY id ASC";
+    $result = $db->query($sql);
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = $result->fetch_assoc()) {
+            array_push($pendings, array($row['player1'], $row['best_of'], $row['id']));
+        }
+        $obj->pendings = $pendings;
+    }
+
+    //afficher les scores dans le scoreboard
+    $sql = "SELECT username, score FROM USERS ORDER BY score DESC LIMIT 10";
+    $result = $db->query($sql);
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = $result->fetch_assoc()) {
+            array_push($scores, array($row['username'], $row['score']));
+        }
+        $obj->scores = $scores;
+    }
+
+    //suppresion des joueurs non connecté depuis 5 secondes
+    $sql = "DELETE FROM LOGGED WHERE last_check < date_sub(now(), interval 5 SECOND)";
+    if ($db->query($sql) === FALSE) $obj->message = $db->error;
+
+    //Supprime les demandes où celui l'a envoyé n'est plus connecté et que la game est pas en cours
+    $sql = "DELETE FROM GAME WHERE player1 NOT IN (SELECT username FROM LOGGED) AND status = 0";
+    if ($db->query($sql) === FALSE) $obj->message = $db->error;
+
+    mysqli_close($db);
+}
+
+if (isset($_SESSION['in_game']))
+    if ($_SESSION['in_game']) $obj->in_game = 1;
+
 
 header('Cache-Control: no-cache, must-revalidate');
 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');

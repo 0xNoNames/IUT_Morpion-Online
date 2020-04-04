@@ -3,18 +3,6 @@ import './function.js';
 (function () {
   $(document).ready(function () {
 
-    particlesJS.load("particles-js", "particles.json", function () {
-      $.each(pJSDom[0].pJS.particles.array, function (i, p) {
-        if (i < pJSDom[0].pJS.particles.array.length / 2) {
-          pJSDom[0].pJS.particles.array[i].color.value = color[0];
-          pJSDom[0].pJS.particles.array[i].color.rgb = hexToRgb(color[0]);
-        } else {
-          pJSDom[0].pJS.particles.array[i].color.value = color[1];
-          pJSDom[0].pJS.particles.array[i].color.rgb = hexToRgb(color[1]);
-        }
-      });
-    });
-
     let score = [0, 0];
     let joueur = ["X", "O"];
     let cpt = 0;
@@ -226,7 +214,9 @@ import './function.js';
         }); //cell.click
         line.append(cell);
       }
-      $("#damier").append(line);
+      $("body").append("<div id='#damier'></div>");
+      $("body").append("<div id='#score'></div>");
+      $('#damier').append(line);
     }
 
     $(".cell").children().css(css_child);
