@@ -8,32 +8,26 @@ login.js -> modifier  "window.location.href = '/'"                      #
 3) Plus qu'à faire le ingame et le local :)
 3) à la connected() check si le mec est in game(pour le reco), si oui location -> game.html
 
-
-Envoie d'une game :
-1) on choisit le bo (déjà fait)
-2) appuis sur Démarrer -> déplace le joueur dans game.html et le fait attendre, peut annuler à tout moment si attente dépasse 30s locate index (timeout dans le js de game.html);
-3) côté receveur on clique sur la demande: DEUX CHOIX DE DEV
--alors soit on fait comme bombparty et on aura genre arthurdev.fr/game/#ID, si quelqu'un essaye de se co et qu'il n'est ni player1 ni player2 le redirect vers l'index.
-Check par php si id="player1" et que $_POST == player2, si c'est le cas go game.html ? jsp
-
 -sinon le mec go sur game.html, le js envoie une demande ajax toutes les 1 secondes, le php renvoie quoi afficher.
 
+PB DE SAVOIR SI LE MEC EST GO, SI IL EST PLUS DANS LOGGED, MODIFIER LE playerx_in_room
+METTRE TOUT LES $_SESSION['playerx'] EN $playerx = $row['playerx_in_room']
+
+
+Ajoute bouton déconnecter/annuler la game et forfait !
+
+onclick sur un cellule, envoie vers game.php avec requette ajax.
 
 
 PAS OUBLIER: le serveur gère tout, les joueurs juste affichent.
 
 
-https://stackoverflow.com/questions/409496/prevent-direct-access-to-a-php-include-file
-Parce que connected.php fait reload la page
+
+
 
 
 BUG :
-    rajouter mot de passe vérifier
+    -rajouter mot de passe vérifier
 
-
-table game avec Player1, Player2, gameID, bestOf, status(0 1)
-Pending 0 = en attente
-Pending 1 = in game
-
-
-Lors de la connexion à la game (par le player2) check si player2 est le bon joueur grâce à la BDD (GAME player1 = azezae)
+    -https://stackoverflow.com/questions/409496/prevent-direct-access-to-a-php-include-file
+    Parce que connected.php fait reload la page

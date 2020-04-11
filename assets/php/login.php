@@ -41,7 +41,7 @@ if (!$db) {
                 session_regenerate_id();
                 $obj->success = true;
                 $_SESSION['user'] = $username;
-            } $obj->message = $db->error;
+            }
         } else {
             $obj->message = "Mauvaise combinaison d'identifiants";
         }
