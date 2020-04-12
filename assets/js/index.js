@@ -10,10 +10,10 @@
         if (data.in_game == 1) window.location.href = 'game.html';
         connected(data);
         $('#connexion, #inscription').remove();
-        $('#disconnect, #local, #name').show();
+        $('#disconnect, #name').show();
       } else {
         $('#disconnect, #scoreboard, #loggedboard, #pendingboard, #name').remove();
-        $('#connexion, #inscription, #local').show();
+        $('#connexion, #inscription').show();
         $('#messages').html(data.message).fadeIn();
         document.body.style.cursor = "default";
       }
@@ -82,7 +82,7 @@
     });
 
     $('#local').click(() => {
-      window.location = 'local.html';
+      window.location = '/V2/';
     });
 
     $('#disconnect').click(() => {

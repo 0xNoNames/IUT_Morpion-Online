@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['user'])) {
-    header("location: /JS/AjaxLOG");
+    header("location: /");
     exit;
 }
 
@@ -92,11 +92,10 @@ if (!$db) {
     $result = $db->query($sql);
     if (mysqli_num_rows($result) > 0) {
         $row = $result->fetch_assoc();
-        if (! isset($_SESSION['player2']) && ! isset($_SESSION['player1'])) {
+        if (!isset($_SESSION['player2']) && !isset($_SESSION['player1'])) {
             if ($row['player1'] == $username) {
                 $_SESSION['player2'] = $row['player2'];
-            }
-            else if ($row['player2'] == $username) {
+            } else if ($row['player2'] == $username) {
                 $_SESSION['player1'] = $row['player1'];
             }
         }

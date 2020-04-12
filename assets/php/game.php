@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['user'])) {
-    header("location: /JS/AjaxLOG");
+    header("location: /");
     exit;
 }
 
@@ -39,6 +39,13 @@ if (!$db) {
         $_SESSION['player1'] = $_POST['host'];
         $obj->success = true;
     } else {
+        if (isset($_POST['remove'])) {
+            $sql = "DELETE FROM GAME WHERE player1 = '$username'";
+            if ($db->query($sql) === FALSE) $obj->debug = $db->error;
+            $sql = "UPDATE LOGGED SET in_game = 0 WHERE username = '$username'";
+            if ($db->query($sql) === FALSE) $obj->debug = $db->error;
+            unset($_SESSION['player2']);
+        }
         if (isset($_SESSION['player2'])) {
             $sql = "SELECT id FROM GAME WHERE player1 = '" . $_SESSION['player2'] . "'";
             if ($result = $db->query($sql))
@@ -122,10 +129,10 @@ if (!$db) {
                                     if ($_SESSION['forfaiteur'] == true) {
                                         $obj->message = "Vous avez déclaré forfait !</br></br>Victoire pour " . $row['player1'] . " !";
                                     } else {
-                                        $obj->message = $row['player2'] . " à déclaré forfait !</br></br>Vous avez gagné !";
+                                        $obj->message = $row['player2'] . " a déclaré forfait !</br></br>Vous avez gagné !";
                                     }
                                 } else {
-                                    $obj->message = $row['player2'] . " à déclaré forfait !</br></br>Vous avez gagné  !";
+                                    $obj->message = $row['player2'] . " a déclaré forfait !</br></br>Vous avez gagné  !";
                                 }
                                 $obj->forfait = true;
                                 mysqli_close($db);
@@ -224,6 +231,7 @@ if (!$db) {
                                     if ($db->query($sql) === FALSE) $obj->debug = $db->error;
                                 }
                             }
+
                             if (isset($_POST['victory']) || isset($_POST['remove'])) {
                                 $sql = "DELETE FROM GAME WHERE id = '$id'";
                                 if ($db->query($sql) === FALSE) $obj->debug = $db->error;
@@ -263,10 +271,10 @@ if (!$db) {
                                 if ($_SESSION['forfaiteur'] == true) {
                                     $obj->message = "Vous avez déclaré forfait !</br></br>Victoire pour " . $row['player2'] . " !";
                                 } else {
-                                    $obj->message = $row['player2'] . " à déclaré forfait !</br></br>Vous avez gagné !";
+                                    $obj->message = $row['player2'] . " a déclaré forfait !</br></br>Vous avez gagné !";
                                 }
                             } else {
-                                $obj->message = $row['player2'] . " à déclaré forfait !</br></br>Vous avez gagné  !";
+                                $obj->message = $row['player2'] . " a déclaré forfait !</br></br>Vous avez gagné  !";
                             }
                             $obj->forfait = true;
                             mysqli_close($db);
@@ -386,7 +394,6 @@ if (!$db) {
                                 }
 
                             }
-
 
                             if (isset($_POST['victory']) || isset($_POST['remove'])) {
                                 $sql = "DELETE FROM GAME WHERE id = '$id'";

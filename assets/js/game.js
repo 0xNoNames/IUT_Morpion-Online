@@ -26,7 +26,6 @@
       url: 'assets/php/game.php',
       method: 'get',
     }).done(function (data) {
-      console.log(data);
       if (data.success) {
         $('#gamemessage').html(data.message);
         if (data.forfait) {
@@ -46,7 +45,7 @@
                   remove: 1
                 }
               }).done(function (data) {
-                window.location.href = "/JS/AjaxLOG";
+                window.location.href = "/";
               }).fail(function (xhr, status, error) {
                 console.log(xhr.responseText)
                 $('body').css({
@@ -90,8 +89,7 @@
                   victory: 1
                 }
               }).done(function (data) {
-                console.log(data);
-                window.location.href = "/JS/AjaxLOG";
+                window.location.href = "/";
               }).fail(function (xhr, status, error) {
                 console.log(xhr.responseText)
                 $('body').css({
@@ -116,7 +114,7 @@
         $('#gamemessage').html(data.message).css('top', '50%').fadeIn();
         document.body.style.cursor = "default";
         setTimeout(function () {
-          window.location.href = "/JS/AjaxLOG";
+          window.location.href = "/";
         }, 2000);
       }
     }).fail(function (xhr, status, error) {
@@ -271,24 +269,43 @@
     $("#player2").css("color", color[1]);
 
 
-    $('#leave').click(() => {
-      $.ajax({
-        url: 'assets/php/game.php',
-        method: 'post',
-        data: {
-          forfait: 1
-        }
-      }).done(function (data) {
-        if (data.leave) {
-          window.location.href = "/JS/AjaxLOG";
-        }
-      }).fail(function (xhr, status, error) {
-        console.log(xhr.responseText)
-        $('body').css({
-          'color': 'white',
-          'font-size': '25px'
-        }).html('Fatal error at game.php from gameconnected() ajax');
-      });;
+    $('#leave').click(function (click) {
+      console.log($(this).html());
+      if ($(this).html() == "Forfait") {
+        $.ajax({
+          url: 'assets/php/game.php',
+          method: 'post',
+          data: {
+            forfait: 1
+          }
+        }).done(function (data) {
+          if (data.leave) {
+            window.location.href = "/";
+          }
+        }).fail(function (xhr, status, error) {
+          console.log(xhr.responseText)
+          $('body').css({
+            'color': 'white',
+            'font-size': '25px'
+          }).html('Fatal error at game.php from gameconnected() ajax');
+        });
+      } else {
+        $.ajax({
+          url: 'assets/php/game.php',
+          method: 'post',
+          data: {
+            remove: 1
+          }
+        }).done(function (data) {
+          window.location.href = "/";
+        }).fail(function (xhr, status, error) {
+          console.log(xhr.responseText)
+          $('body').css({
+            'color': 'white',
+            'font-size': '25px'
+          }).html('Fatal error at game.php from gameconnected() ajax');
+        });
+      }
     })
 
     $("div").click(function (event) {

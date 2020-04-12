@@ -1,10 +1,15 @@
-//letiables globales
-let color = getcolorCookie("colors");
+//variables globales
+var color = getcolorCookie("colors");
 if (color == null) {
   color = [getColor(), getColor()];
 }
 
 // Fonctions
+//source https://stackoverflow.com/questions/10730362/get-cookie-by-name
+function getcookieName(name) {
+  var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  if (match) return match[2];
+}
 
 function changecolorCookie() {
   document.cookie = "colors=" + getColor() + "," + getColor();
@@ -12,13 +17,13 @@ function changecolorCookie() {
 }
 
 function getcolorCookie() {
-  let cookie = document.cookie.split(';')[0].split('=');
-  if (cookie[0] == "colors") {
-    let color = cookie[1].split(',');
-    return [color[0], color[1]];
-  } else {
+  let cookie = getcookieName("colors");
+  if (typeof cookie === 'undefined') {
     changecolorCookie();
     getcolorCookie();
+  } else {
+    let colorcookie = cookie.split(',');
+    return [colorcookie[0], colorcookie[1]];
   }
 }
 
@@ -28,17 +33,19 @@ function getColor() {
   return `#${toHex(rgb[0])}${toHex(rgb[1])}${toHex(rgb[2])}`;
 }
 
-function hue2rgb(t) { //modifé pour faire S=1 et L=0.5
+// j'ai recupere un bout de code qui permet de passer du HSL au RGB que j'ai modifie pour pouvoir toujours avoir des couleurs lumineuses (la saturation = 1 et la luminosité = 0.5) pour les fonctions primarytoRgb et toRgb
+// source https://web.archive.org/web/20081227003853/http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+function toRgb(hue) {
+  return [primarytoRgb(hue + 1 / 3), primarytoRgb(hue), primarytoRgb(hue - 1 / 3)];
+}
+
+function primarytoRgb(t) { //modifé pour faire saturation=1 et luminosité=0.5
   if (t < 0) t += 1;
   if (t > 1) t -= 1;
   if (t < 1 / 6) return 6 * t;
   if (t < 1 / 2) return 1;
   if (t < 2 / 3) return (2 / 3 - t) * 6;
   return 0;
-}
-
-function toRgb(hue) {
-  return [hue2rgb(hue + 1 / 3), hue2rgb(hue), hue2rgb(hue - 1 / 3)];
 }
 
 function toHex(rgb) {
@@ -52,9 +59,7 @@ function HextoRGBA(alpha, color, index) {
 
 function boxShadow(color) {
   return "0 0 5px " + color + ", 0 0 10px " + color + ", 0 0 15px " + color + ", 0 0 20px " + color + ", 0 0 30px " + color + ", 0 0 40px " + color + ", 0 0 55px " + color;
-
 }
-
 
 function paramsGame(user) {
   $('#scoreboard, #pendingboard, #loggedboard, #name, #disconnect, #local').hide();
@@ -92,7 +97,7 @@ function paramsGame(user) {
       data: $(this).serialize() + "&player2=" + user
     }).done(function (data) {
       if (data.success) {
-        window.location.href = '/JS/AjaxLOG/game.html';
+        window.location.href = '/game.html';
       } else {
         $('#messages').finish().hide().html(data.message).fadeIn();
       }
@@ -188,14 +193,11 @@ function showUsers(parsed) {
             }
           }).done(function (data) {
             if (data.success) {
-              window.location.href = '/JS/AjaxLOG/game.html';
+              window.location.href = '/game.html';
             } else {
               $('#messages').finish().hide().html(data.message).fadeIn();
             }
           }).fail(function () {
-            //   console.log(xhr.responseText)
-            // function (xhr, status, error) {
-            // })
             $('body').css({
               'color': 'white',
               'font-size': '25px'

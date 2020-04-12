@@ -2,7 +2,7 @@
 session_start();
 
 if (isset($_SESSION["user"]) || !isset($_POST["username"])) {
-    header("location: /JS/AjaxLOG");
+    header("location: /");
     exit;
 }
 

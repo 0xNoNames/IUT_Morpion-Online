@@ -6,7 +6,7 @@
       method: 'get',
     }).done(function (data) {
       if (data.success) {
-        window.location.href = '/JS/AjaxLOG';
+        window.location.href = '/';
       }
     }).fail(function () {
       $('body').css({
@@ -22,8 +22,7 @@
         data: $(this).serialize()
       }).done(function (data) {
         if (data.success === true) {
-          //window.location.href = '/';
-          window.location.href = '/JS/AjaxLOG';
+          window.location.href = '/';
         } else {
           $('#messages').html(data.message).fadeIn();
         }

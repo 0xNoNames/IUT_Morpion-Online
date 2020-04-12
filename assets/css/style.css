@@ -73,6 +73,13 @@ body {
   margin: 0;
 }
 
+#navscores:first-child {
+  padding-top: 1vh;
+}
+#navscores:last-child {
+  padding-bottom: 1vh;
+}
+
 #scoreboard {
   display: none;
   text-align: center;
@@ -268,7 +275,7 @@ input[type=text], input[type=password], input[type=email], #loginbutton {
   text-align: center;
 }
 
-input[type=text], input[type=email] {
+input[type=text], input[type=email], #firstpassword {
   border-bottom: 1px solid white;
 }
 
@@ -307,6 +314,7 @@ button:focus {
 }
 
 #leave {
+  display: none;
   left: 50%;
   transform: translate(-50%,0%);
 }

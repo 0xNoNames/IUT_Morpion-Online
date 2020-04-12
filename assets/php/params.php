@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION["user"]) || !isset($_POST["bestof"])) {
-    header("location: /JS/AjaxLOG");
+    header("location: /");
     exit;
 }
 
@@ -17,7 +17,7 @@ if (preg_match('/[1-3-5]+/', $_POST['bestof']) == 0) {
     $bo = html_entity_decode($_POST['bestof']);
     $player1 = html_entity_decode($_SESSION['user']);
     $player2 = html_entity_decode($_POST['player2']);
-    
+
     define('DB_SERVER', 'mysql-arthurdev.alwaysdata.net');
     define('DB_USERNAME', 'arthurdev');
     define('DB_PASSWORD', 'Aze123*');
