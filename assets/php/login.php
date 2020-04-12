@@ -12,6 +12,7 @@ $obj->message = 'Identifiant ou mot de passe incorrect';
 
 $_SESSION['bothconnected'] = false;
 $_SESSION['in_game'] = false;
+$_SESSION['forfaiteur'] = false;
 
 define('DB_SERVER', 'mysql-arthurdev.alwaysdata.net');
 define('DB_USERNAME', 'arthurdev');

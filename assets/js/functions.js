@@ -91,9 +91,10 @@ function paramsGame(user) {
       method: $(this).attr('method'),
       data: $(this).serialize() + "&player2=" + user
     }).done(function (data) {
-      $('#messages').finish().hide().html(data.message).fadeIn();
       if (data.success) {
         window.location.href = '/JS/AjaxLOG/game.html';
+      } else {
+        $('#messages').finish().hide().html(data.message).fadeIn();
       }
     }).fail(() => {
       $('body').css({

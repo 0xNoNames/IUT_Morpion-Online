@@ -29,6 +29,34 @@
       console.log(data);
       if (data.success) {
         $('#gamemessage').html(data.message);
+        if (data.forfait) {
+          $('#damier, #leave, #player1, #player2').hide();
+          $("#gamemessage").css({
+            'top': '50%',
+            'color': 'white'
+          });
+          $('#player1').html(data.players[0] + "</br></br>" + "<span style='color: white'>" + data.players[2] + "</span>");
+          $('#player2').html(data.players[1] + "</br></br>" + "<span style='color: white'>" + data.players[3] + "</span>");
+          setTimeout(function () {
+            setTimeout(function () {
+              $.ajax({
+                url: 'assets/php/game.php',
+                method: 'post',
+                data: {
+                  remove: 1
+                }
+              }).done(function (data) {
+                window.location.href = "/JS/AjaxLOG";
+              }).fail(function (xhr, status, error) {
+                console.log(xhr.responseText)
+                $('body').css({
+                  'color': 'white',
+                  'font-size': '25px'
+                }).html('Fatal error at game.php from gameconnected() ajax');
+              });
+            }, 2000);
+          }, 2000);
+        }
         if (data.bothconnected) {
           bothconnected = true;
           $('#damier').show().css("display", 'flex');
@@ -47,30 +75,48 @@
             yourturn = 0;
           }
           if (data.victory) {
-            $('#damier').hide();
+            $('#damier, #leave').hide();
             $("#gamemessage").css({
               'top': '50%',
               'color': 'white'
-            })
+            });
+            $('#player1').html(data.players[0] + "</br></br>" + "<span style='color: white'>" + data.players[2] + "</span>");
+            $('#player2').html(data.players[1] + "</br></br>" + "<span style='color: white'>" + data.players[3] + "</span>");
             setTimeout(function () {
-              //window.location.href = "/JS/AjaxLOG";
-            }, 3000);
-          }
-          updateBoard(data);
+              $.ajax({
+                url: 'assets/php/game.php',
+                method: 'post',
+                data: {
+                  victory: 1
+                }
+              }).done(function (data) {
+                console.log(data);
+                window.location.href = "/JS/AjaxLOG";
+              }).fail(function (xhr, status, error) {
+                console.log(xhr.responseText)
+                $('body').css({
+                  'color': 'white',
+                  'font-size': '25px'
+                }).html('Fatal error at game.php from gameconnected() ajax');
+              });
+            }, 2000);
+          } else updateBoard(data);
+          $('#leave').html('Forfait').css('top', '10%').show()
         } else {
           bothconnected = false;
           $('#damier').hide();
           $("#gamemessage").css("color", "white");
+          if (!data.forfait) $('#leave').html('Annuler').show();
         }
         setTimeout(() => {
           gameconnected();
         }, 1000);
       } else {
-        $('#player1, #player2, #damier').hide();
+        $('#player1, #player2, #damier, #leave').hide();
         $('#gamemessage').html(data.message).css('top', '50%').fadeIn();
         document.body.style.cursor = "default";
         setTimeout(function () {
-          //window.location.href = "/JS/AjaxLOG";
+          window.location.href = "/JS/AjaxLOG";
         }, 2000);
       }
     }).fail(function (xhr, status, error) {
@@ -89,17 +135,10 @@
 
 
   function updateBoard(databoard) {
-    reset = databoard.reset
-    $('#player1').html(databoard.players[0] + "</br></br>" + "<span style='color: white'>" + databoard.players[2] + "</span>");
-    $('#player2').html(databoard.players[1] + "</br></br>" + "<span style='color: white'>" + databoard.players[3] + "</span>");
+    reset = databoard.reset;
     if (reset) {
-      $('.cell').children().html('N').css(css_joueur("#ff0000"));
-      $("#gamemessage, #player1, #player2").children().css(css_joueur("#ff0000"));
-      $(".cell").children().css({
-        "color": "white",
-        "z-index": "999"
-      });
-
+      $('.cell').children().html("•").css(css_joueur("#ff0000"));
+      $(".cell").children().css("color", "white");
       $.each(pJSDom[0].pJS.particles.array, function (i, p) {
         pJSDom[0].pJS.particles.array[i].color.value = '#ff0000';
         pJSDom[0].pJS.particles.array[i].color.rgb = hexToRgb('#ff0000');
@@ -108,8 +147,6 @@
       setTimeout(() => {
         $("#damier").effect("shake", 400);
         setTimeout(() => {
-          $(".cell").children().html("&nbsp");
-          $(".cell").data("clicked", 0);
           $(".cell").children().removeAttr("style").hide().fadeIn({
             duration: 250,
             specialEasing: {
@@ -136,9 +173,13 @@
         }
       }
     }
-    $(".cell:contains('X')").children().css(css_joueur(color[0])).data("clicked", 1);
-    $(".cell:contains('O')").children().css(css_joueur(color[1])).data("clicked", 1);
-    $(".cell:contains('')").data("clicked", 0);
+    $('#player1').html(databoard.players[0] + "</br></br>" + "<span style='color: white'>" + databoard.players[2] + "</span>");
+    $('#player2').html(databoard.players[1] + "</br></br>" + "<span style='color: white'>" + databoard.players[3] + "</span>");
+    $(".cell").data("clicked", 0);
+    $(".cell:contains('X')").children().css(css_joueur(color[0]));
+    $(".cell:contains('O')").children().css(css_joueur(color[1]));
+    $(".cell:contains('O')").data("clicked", 1);
+    $(".cell:contains('X')").data("clicked", 1);
   }
 
   function css_joueur(color) {
@@ -230,13 +271,24 @@
     $("#player2").css("color", color[1]);
 
 
-    $('#disconnect').click(() => {
+    $('#leave').click(() => {
       $.ajax({
-        url: 'assets/php/logout.php',
-        method: 'get'
-      }).done(function () {
-        window.location.href = 'index.html';
-      });
+        url: 'assets/php/game.php',
+        method: 'post',
+        data: {
+          forfait: 1
+        }
+      }).done(function (data) {
+        if (data.leave) {
+          window.location.href = "/JS/AjaxLOG";
+        }
+      }).fail(function (xhr, status, error) {
+        console.log(xhr.responseText)
+        $('body').css({
+          'color': 'white',
+          'font-size': '25px'
+        }).html('Fatal error at game.php from gameconnected() ajax');
+      });;
     })
 
     $("div").click(function (event) {

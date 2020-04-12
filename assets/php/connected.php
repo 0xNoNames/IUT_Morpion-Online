@@ -19,6 +19,8 @@ $loggedusers = array();
 $scores = array();
 $pendings = array();
 
+$_SESSION['forfaiteur'] = false;
+
 define('DB_SERVER', 'mysql-arthurdev.alwaysdata.net');
 define('DB_USERNAME', 'arthurdev');
 define('DB_PASSWORD', 'Aze123*');
@@ -82,6 +84,9 @@ if (!$db) {
     $sql = "DELETE FROM GAME WHERE player1 NOT IN (SELECT username FROM LOGGED) AND status = 0";
     if ($db->query($sql) === FALSE) $obj->message = $db->error;
 
+    $sql = "DELETE FROM GAME WHERE player1 = '&username' OR player2 = '$username' AND status = 2";
+    if ($db->query($sql) === FALSE) $obj->message = $db->error;
+
     //Reconnection à la derniere game
     $sql = "SELECT id, player1, player2 FROM GAME WHERE status = 1 AND (player2 = '$username' OR player1 = '$username')";
     $result = $db->query($sql);
@@ -100,6 +105,8 @@ if (!$db) {
     } else {
         $_SESSION['in_game'] = false;
         $obj->in_game = 0;
+        $sql = "UPDATE LOGGED SET in_game = 0 WHERE username = '$username'";
+        if ($db->query($sql) === FALSE) $obj->debug = $db->error;
     }
 
     mysqli_close($db);
