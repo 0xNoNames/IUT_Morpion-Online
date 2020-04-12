@@ -1,26 +1,22 @@
 (function () {
   'use strict';
   document.body.style.cursor = "wait";
-  var score = [0, 0];
-  var joueur = ["X", "O"];
-  var cpt = 0;
-  var turn = 1;
-  var effects = ["blind", "clip", "drop"];
-  var bothconnected = false;
+  let score = [0, 0];
+  let click = [0, 0];
+  let joueur = ["X", "O"];
+  let player = 0;
+  let yourturn = 0;
+  let effects = ["blind", "clip", "drop"];
+  let bothconnected = false;
+  let reset = false;
 
-  var css_child = {
+  let css_child = {
     height: "150px",
     width: "150px",
     display: "flex",
     "justify-content": "center",
     "align-items": "center",
     "text-align": "center",
-    "z-index": "1"
-  };
-
-  var css_cell = {
-    width: "150px",
-    height: "150px",
     "z-index": "1"
   };
 
@@ -36,18 +32,35 @@
         if (data.bothconnected) {
           bothconnected = true;
           $('#damier').show().css("display", 'flex');
-          $('#player1, #player2').show()
+          $('#player1, #player2').show();
           $("#gamemessage").css({
             "position": "absolute",
             "top": "85%"
           });
-          if (data.turn == 1) turn = 1;
-          else turn = 0;
-          if (turn) $("#gamemessage").css("color", color[1]);
-          else $("#gamemessage").css("color", color[0]);
+          if (data.player == 1) player = 1;
+          else player = 0;
+          if (data.yourturn == 1) {
+            $("#gamemessage").css("color", color[player]);
+            yourturn = 1;
+          } else {
+            player ? $("#gamemessage").css("color", color[0]) : $("#gamemessage").css("color", color[1]);
+            yourturn = 0;
+          }
+          if (data.victory) {
+            $('#damier').hide();
+            $("#gamemessage").css({
+              'top': '50%',
+              'color': 'white'
+            })
+            setTimeout(function () {
+              //window.location.href = "/JS/AjaxLOG";
+            }, 3000);
+          }
           updateBoard(data);
         } else {
+          bothconnected = false;
           $('#damier').hide();
+          $("#gamemessage").css("color", "white");
         }
         setTimeout(() => {
           gameconnected();
@@ -57,7 +70,7 @@
         $('#gamemessage').html(data.message).css('top', '50%').fadeIn();
         document.body.style.cursor = "default";
         setTimeout(function () {
-          window.location.href = "/JS/AjaxLOG";
+          //window.location.href = "/JS/AjaxLOG";
         }, 2000);
       }
     }).fail(function (xhr, status, error) {
@@ -76,9 +89,56 @@
 
 
   function updateBoard(databoard) {
-    console.log(databoard.players);
+    reset = databoard.reset
     $('#player1').html(databoard.players[0] + "</br></br>" + "<span style='color: white'>" + databoard.players[2] + "</span>");
     $('#player2').html(databoard.players[1] + "</br></br>" + "<span style='color: white'>" + databoard.players[3] + "</span>");
+    if (reset) {
+      $('.cell').children().html('N').css(css_joueur("#ff0000"));
+      $("#gamemessage, #player1, #player2").children().css(css_joueur("#ff0000"));
+      $(".cell").children().css({
+        "color": "white",
+        "z-index": "999"
+      });
+
+      $.each(pJSDom[0].pJS.particles.array, function (i, p) {
+        pJSDom[0].pJS.particles.array[i].color.value = '#ff0000';
+        pJSDom[0].pJS.particles.array[i].color.rgb = hexToRgb('#ff0000');
+      });
+
+      setTimeout(() => {
+        $("#damier").effect("shake", 400);
+        setTimeout(() => {
+          $(".cell").children().html("&nbsp");
+          $(".cell").data("clicked", 0);
+          $(".cell").children().removeAttr("style").hide().fadeIn({
+            duration: 250,
+            specialEasing: {
+              fadeIn: "easeOutCubic"
+            }
+          });
+          $("#damier").css("display", 'flex');
+          $(".cell").children().css(css_child);
+          $.each(pJSDom[0].pJS.particles.array, function (i, p) {
+            if (i < pJSDom[0].pJS.particles.array.length / 2) {
+              pJSDom[0].pJS.particles.array[i].color.value = color[0];
+              pJSDom[0].pJS.particles.array[i].color.rgb = hexToRgb(color[0]);
+            } else {
+              pJSDom[0].pJS.particles.array[i].color.value = color[1];
+              pJSDom[0].pJS.particles.array[i].color.rgb = hexToRgb(color[1]);
+            }
+          });
+        }, 1000);
+      }, 200);
+    } else {
+      for (let y = 0; y < 3; y++) {
+        for (let x = 0; x < 3; x++) {
+          $(".cell").FBD("y", y).FBD("x", x).children().html(databoard.board[x][y]);
+        }
+      }
+    }
+    $(".cell:contains('X')").children().css(css_joueur(color[0])).data("clicked", 1);
+    $(".cell:contains('O')").children().css(css_joueur(color[1])).data("clicked", 1);
+    $(".cell:contains('')").data("clicked", 0);
   }
 
   function css_joueur(color) {
@@ -87,9 +147,9 @@
     };
   }
 
-  $.fn.FBD = function (prop, val) {
+  $.fn.FBD = function (data, val) {
     return this.filter(function () {
-      return $(this).data(prop) == val;
+      return $(this).data(data) == val;
     });
   };
 
@@ -97,11 +157,10 @@
     for (let y = 0; y < 3; y++) {
       let line = $("<div></div>");
       for (let x = 0; x < 3; x++) {
-        let cell = $('<div class="cell"><div>&nbsp</div></div>').css(css_cell);
+        let cell = $('<div class="cell"><div>&nbsp</div></div>');
         cell.data("x", x);
         cell.data("y", y);
         cell.data("clicked", 0);
-        cell.data("draw", 0);
 
         if (x == 0) {
           if (y in [0, 1]) {
@@ -118,75 +177,36 @@
         }
 
         cell.click(function () {
-          if (!$(this).data("clicked")) {
-            cpt += 1;
-            $(this).stop().children().html(joueur[turn]).css("color", "#FFF");
-            $(this).children().css(css_joueur(color[turn]));
+          click = [x, y];
+          if (!$(this).data("clicked") && yourturn) {
+            $(this).stop().children().html(joueur[player]);
+            if (player == 1) {
+              $(this).children().css(css_joueur(color[1]));
+            } else {
+              $(this).children().css(css_joueur(color[0]));
+            }
+            yourturn = 0;
             $(this).data("clicked", 1);
-
-            if (victory()) {
-              $(".cell").data("clicked", 1);
-              cpt = 0;
-              setTimeout(() => {
-                $("#damier").effect(effects[Math.floor(Math.random() * effects.length)], 500);
-                setTimeout(() => {
-                  $(".cell").children().html("&nbsp");
-                  $(".cell").data("clicked", 0);
-                  $("#damier").css("display", 'flex');
-                  $(".cell").children().css(css_child);
-                  cpt = 0;
-                }, 1000);
-              }, 250);
-            }
-
-            turn ? turn = 0 : turn = 1;
-
-            if (cpt == 9) {
-              cpt = 0;
-              $(".cell").children().css(css_joueur("#ff0000"));
-              $("#gamemessage").children().css(css_joueur("#ff0000"));
-              $(".cell").children().css("color", "white");
-              $(".cell").data("draw", 1);
-
-              $.each(pJSDom[0].pJS.particles.array, function (i, p) {
-                pJSDom[0].pJS.particles.array[i].color.value = '#ff0000';
-                pJSDom[0].pJS.particles.array[i].color.rgb = hexToRgb('#ff0000');
-              });
-
-              setTimeout(() => {
-                $("#damier").effect("shake", 500);
-                setTimeout(() => {
-                  $(".cell").children().html("&nbsp");
-                  $(".cell").data("clicked", 0);
-                  $(".cell").children().removeAttr("style").hide().fadeIn({
-                    duration: 250,
-                    specialEasing: {
-                      fadeIn: "easeOutCubic"
-                    }
-                  });
-                  $("#damier").css("display", 'flex');
-                  $(".cell").data("draw", 0);
-                  $(".cell").children().css(css_child);
-                  $("#" + joueur[0]).css(css_joueur(color[0]));
-                  $("#" + joueur[1]).css(css_joueur(color[1]));
-                  $.each(pJSDom[0].pJS.particles.array, function (i, p) {
-                    if (i < pJSDom[0].pJS.particles.array.length / 2) {
-                      pJSDom[0].pJS.particles.array[i].color.value = color[0];
-                      pJSDom[0].pJS.particles.array[i].color.rgb = hexToRgb(color[0]);
-                    } else {
-                      pJSDom[0].pJS.particles.array[i].color.value = color[1];
-                      pJSDom[0].pJS.particles.array[i].color.rgb = hexToRgb(color[1]);
-                    }
-                  });
-                }, 1000);
-              }, 200);
-            }
+            $.ajax({
+              url: 'assets/php/game.php',
+              method: 'post',
+              data: {
+                click
+              }
+            }).done(function (data) {
+              updateBoard(data);
+            }).fail(function (xhr, status, error) {
+              console.log(xhr.responseText)
+              $('body').css({
+                'color': 'white',
+                'font-size': '25px'
+              }).html('Fatal error at game.php from gameconnected() ajax');
+            });
           }
         }); //cell.click
         line.append(cell);
       }
       $('#damier').append(line);
-      //$("#gamemessage").html("<div id='" + joueur[0] + "'>" + joueur[0] + "</div>&nbsp:&nbsp<div id='" + joueur[1] + "'>" + joueur[1] + "</div>")
       $("#" + joueur[0]).css(css_joueur(color[0]));
       $("#" + joueur[1]).css(css_joueur(color[1]));
     }
@@ -206,8 +226,8 @@
       });
     });
 
-    $("#player1").css("color", color[1]);
-    $("#player2").css("color", color[0]);
+    $("#player1").css("color", color[0]);
+    $("#player2").css("color", color[1]);
 
 
     $('#disconnect').click(() => {
@@ -219,25 +239,27 @@
       });
     })
 
-
     $("div").click(function (event) {
-      if (event.target.id != "inscription" && event.target.id != "local" && event.target.id != "connexion" && !$(event.target).is("button")) {
-        changecolorCookie();
-        $.each(pJSDom[0].pJS.particles.array, function (i, p) {
-          if (i < pJSDom[0].pJS.particles.array.length / 2) {
-            pJSDom[0].pJS.particles.array[i].color.value = color[0];
-            pJSDom[0].pJS.particles.array[i].color.rgb = hexToRgb(color[0]);
-          } else {
-            pJSDom[0].pJS.particles.array[i].color.value = color[1];
-            pJSDom[0].pJS.particles.array[i].color.rgb = hexToRgb(color[1]);
+      if (!reset) {
+        if (this.id.toString() != "damier" && this.id.toString() != "" && !$(event.target).is("button")) {
+          changecolorCookie();
+          $.each(pJSDom[0].pJS.particles.array, function (i, p) {
+            if (i < pJSDom[0].pJS.particles.array.length / 2) {
+              pJSDom[0].pJS.particles.array[i].color.value = color[0];
+              pJSDom[0].pJS.particles.array[i].color.rgb = hexToRgb(color[0]);
+            } else {
+              pJSDom[0].pJS.particles.array[i].color.value = color[1];
+              pJSDom[0].pJS.particles.array[i].color.rgb = hexToRgb(color[1]);
+            }
+          })
+          if (bothconnected) {
+            $("#gamemessage").css("color", color[player]);
           }
-        })
-        if (bothconnected) {
-          if (turn) $("#gamemessage").css("color", color[1]);
-          else $("#gamemessage").css("color", color[0]);
+          $("#player1").css("color", color[0]);
+          $("#player2").css("color", color[1]);
+          $(".cell:contains('X')").children().css(css_joueur(color[0]));
+          $(".cell:contains('O')").children().css(css_joueur(color[1]));
         }
-        $("#player1").css("color", color[1]);
-        $("#player2").css("color", color[0]);
       }
     })
   });

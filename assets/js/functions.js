@@ -1,5 +1,5 @@
-//Variables globales
-var color = getcolorCookie("colors");
+//letiables globales
+let color = getcolorCookie("colors");
 if (color == null) {
   color = [getColor(), getColor()];
 }
@@ -12,9 +12,9 @@ function changecolorCookie() {
 }
 
 function getcolorCookie() {
-  var cookie = document.cookie.split(';')[0].split('=');
+  let cookie = document.cookie.split(';')[0].split('=');
   if (cookie[0] == "colors") {
-    var color = cookie[1].split(',');
+    let color = cookie[1].split(',');
     return [color[0], color[1]];
   } else {
     changecolorCookie();
@@ -23,8 +23,8 @@ function getcolorCookie() {
 }
 
 function getColor() {
-  var hue = (360 * Math.random()) / 360;
-  var rgb = toRgb(hue);
+  let hue = (360 * Math.random()) / 360;
+  let rgb = toRgb(hue);
   return `#${toHex(rgb[0])}${toHex(rgb[1])}${toHex(rgb[2])}`;
 }
 
@@ -162,7 +162,7 @@ function showUsers(parsed) {
     }
     if (parsed.pendings != '') {
       $('#navrequests').html('<ul></ul>');
-      for (var i = 0; i < parsed.pendings.length; i++) {
+      for (let i = 0; i < parsed.pendings.length; i++) {
         $('#navrequests > ul').append('<li><button id=\'pending' + i + '\'>' + parsed.pendings[i][0] + ' | bo' + parsed.pendings[i][1] + '</button></li>');
         $('#pending' + i).data("host", parsed.pendings[i][0]).css({
           'background-color': HextoRGBA(0.5, color, i % 1),
@@ -219,7 +219,7 @@ function showUsers(parsed) {
     });
   }
   $('#navscores').html('');
-  for (var i = 0; i < parsed.scores.length; i++) {
+  for (let i = 0; i < parsed.scores.length; i++) {
     $('#navscores').append('<ul id=\'user' + i + '\'><span>' + (i + 1) + ') ' + parsed.scores[i][0] + '</span><span>' + parsed.scores[i][1] + '</span></ul>');
     if (i % 2 == 0) {
       $('#user' + i).css('color', color[0]);
@@ -242,7 +242,7 @@ function connected(dataconnect) {
     method: 'get',
   }).done(function (data) {
     if (data.success) {
-      var done = data;
+      let done = data;
       setTimeout(() => {
         connected(done);
       }, 3000);

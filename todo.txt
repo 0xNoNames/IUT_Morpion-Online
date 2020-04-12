@@ -5,24 +5,9 @@ login.js -> modifier  "window.location.href = '/'"                      #
 (gerer le htacess pour le PHP)
 
 1) modifier le getcolor dans functions pour le plagiat
-3) Plus qu'à faire le ingame et le local :)
-3) à la connected() check si le mec est in game(pour le reco), si oui location -> game.html
-
--sinon le mec go sur game.html, le js envoie une demande ajax toutes les 1 secondes, le php renvoie quoi afficher.
-
-PB DE SAVOIR SI LE MEC EST GO, SI IL EST PLUS DANS LOGGED, MODIFIER LE playerx_in_room
-METTRE TOUT LES $_SESSION['playerx'] EN $playerx = $row['playerx_in_room']
-
+local :)
 
 Ajoute bouton déconnecter/annuler la game et forfait !
-
-onclick sur un cellule, envoie vers game.php avec requette ajax.
-
-
-PAS OUBLIER: le serveur gère tout, les joueurs juste affichent.
-
-
-
 
 
 

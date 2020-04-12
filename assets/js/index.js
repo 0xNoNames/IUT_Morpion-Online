@@ -39,7 +39,7 @@
     });
 
     $('#loggedboard > header').css('color', HextoRGBA(1, color, 1));
-    for (var i = 0; i < document.styleSheets.length; i++) {
+    for (let i = 0; i < document.styleSheets.length; i++) {
       if (document.styleSheets[i].title == 'style') {
         document.styleSheets[i].addRule("::-webkit-scrollbar-thumb", 'background-color: ' + color[0]);
         break;
@@ -111,7 +111,8 @@
         changecolorCookie();
         $('#form-params > input:checked + label').css('background-color', HextoRGBA(0.5, color, 1));
         $('#name > span').css('color', HextoRGBA(1, color, 0));
-        for (var i = 0; i < document.styleSheets.length; i++) {
+        let i = 0;
+        for (i = 0; i < document.styleSheets.length; i++) {
           if (document.styleSheets[i].title == 'style') {
             document.styleSheets[i].addRule("::-webkit-scrollbar-thumb", 'background-color: ' + color[0]);
             break;
@@ -119,7 +120,7 @@
         }
 
         $('#loggedboard > header').css('color', HextoRGBA(1, color, 1));
-        for (var i = 0; $('#user' + i).val() != null; i++) {
+        for (i = 0; $('#user' + i).val() != null; i++) {
           if (i % 2 == 0) $('#user' + i).css('color', color[0]);
           else $('#user' + i).css('color', color[1]);
         }

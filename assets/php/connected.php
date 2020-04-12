@@ -82,12 +82,28 @@ if (!$db) {
     $sql = "DELETE FROM GAME WHERE player1 NOT IN (SELECT username FROM LOGGED) AND status = 0";
     if ($db->query($sql) === FALSE) $obj->message = $db->error;
 
+    //Reconnection à la derniere game
+    $sql = "SELECT id, player1, player2 FROM GAME WHERE status = 1 AND (player2 = '$username' OR player1 = '$username')";
+    $result = $db->query($sql);
+    if (mysqli_num_rows($result) > 0) {
+        $row = $result->fetch_assoc();
+        if (! isset($_SESSION['player2']) && ! isset($_SESSION['player1'])) {
+            if ($row['player1'] == $username) {
+                $_SESSION['player2'] = $row['player2'];
+            }
+            else if ($row['player2'] == $username) {
+                $_SESSION['player1'] = $row['player1'];
+            }
+        }
+        $_SESSION['in_game'] = true;
+        $obj->in_game = 1;
+    } else {
+        $_SESSION['in_game'] = false;
+        $obj->in_game = 0;
+    }
+
     mysqli_close($db);
 }
-
-if (isset($_SESSION['in_game']))
-    if ($_SESSION['in_game']) $obj->in_game = 1;
-
 
 header('Cache-Control: no-cache, must-revalidate');
 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
