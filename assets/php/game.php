@@ -114,12 +114,14 @@ if (!$db) {
                     $id = $row['id'];
                     $obj->message = "Connecté !</br></br>" . $_SESSION['player1'] . " arrive...";
                     if (isset($_POST['forfait'])) {
+                      if ($_POST['forfait'] == 1) {
                         $sql = "UPDATE USERS SET score = score + 1 WHERE username = '" . $row['player1'] . "'";
                         $db->query($sql);
                         $sql = "UPDATE GAME SET status = 2 WHERE id = '$id'";
                         $db->query($sql);
                         $obj->forfait = true;
                         $_SESSION['forfaiteur'] = true;
+                      }
                     } else {
                         $sql = "UPDATE GAME SET player2_in_room = 1 WHERE id = '$id'";
                         $db->query($sql);
@@ -392,9 +394,7 @@ if (!$db) {
                                     $sql = "UPDATE USERS SET score = score + 1 WHERE username = '" . $row['player2'] . "'";
                                     if ($db->query($sql) === FALSE) $obj->debug = $db->error;
                                 }
-
                             }
-
                             if (isset($_POST['victory']) || isset($_POST['remove'])) {
                                 $sql = "DELETE FROM GAME WHERE id = '$id'";
                                 if ($db->query($sql) === FALSE) $obj->debug = $db->error;

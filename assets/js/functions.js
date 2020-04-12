@@ -223,7 +223,7 @@ function showUsers(parsed) {
   }
   $('#navscores').html('');
   for (let i = 0; i < parsed.scores.length; i++) {
-    $('#navscores').append('<ul id=\'user' + i + '\'><span>' + (i + 1) + ') ' + parsed.scores[i][0] + '</span><span>' + parsed.scores[i][1] + '</span></ul>');
+    $('#navscores').append('<ul id=\'user' + i + '\'><span>' + (i + 1) + ') ' + parsed.scores[i][0] + '</span><span>' + parsed.scores[i][1] % 5 + '</span></ul>');
     if (i % 2 == 0) {
       $('#user' + i).css('color', color[0]);
     } else {
